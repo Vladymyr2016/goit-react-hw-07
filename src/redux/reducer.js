@@ -5,17 +5,19 @@ import { filterContact } from './filterSlice';
 const initialState = {
   contacts: {
     items: [],
+    loading: false,
+    error: null,
   },
   filters: {
     name: '',
   },
 };
 
-export const phoneBookReduser = createReducer(initialState, builder => {
+export const phoneBookReduser = createReducer(initialState, (builder) => {
   builder
     .addCase(removeContact, (state, action) => {
       state.phoneBook.contacts.items = state.phoneBook.contacts.items.filter(
-        item => item.id !== action.payload
+        (item) => item.id !== action.payload
       );
     })
     .addCase(addContact, (state, action) => {

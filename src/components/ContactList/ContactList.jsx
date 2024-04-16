@@ -1,29 +1,33 @@
 import Contact from '../Contact/Contact';
-import { useSelector } from 'react-redux';
-import { selectPhoneBook } from '../../redux/contactsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { isLoading, selectPhoneBook } from '../../redux/contactsSlice';
 import { selectFilter } from '../../redux/filterSlice';
-// import { selectFilter } from '../../redux/filterSlice';
+
+import { useEffect } from 'react';
+import { fetchData } from '../../redux/contactsOps';
 
 const ContactList = () => {
   const contacts = useSelector(selectPhoneBook);
   const filter = useSelector(selectFilter);
 
-  console.log(contacts);
-  console.log(filter);
+  const dispatch = useDispatch();
 
-  const getFilteredContacts = contacts.filter((contact) => {
-    console.log(contact);
-    console.log(filter);
-    return contact.title.toLowerCase().includes(filter.toLowerCase());
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
+
+  const getFilteredContacts = contacts?.filter((contact) => {
+    return contact?.name?.toLowerCase()?.includes(filter?.toLowerCase());
   });
+  console.log(getFilteredContacts);
   return (
     <>
+      {isLoading && <p>Loading...</p>}
       <ul>
-        <div>
-          {getFilteredContacts.map((contact) => {
-            return <Contact key={contact.id} {...contact} />;
-          })}
-        </div>
+        {getFilteredContacts?.map((contact) => {
+          return <Contact key={contact.id} {...contact} />;
+        })}
       </ul>
     </>
   );
