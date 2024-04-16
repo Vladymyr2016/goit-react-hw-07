@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.item {
+    margin: 0 auto;
+    border: 1px solid black;
+    background-color: beige;
+    text-decoration: none;
+    list-style-type: none;
+    width: 100%;
+    padding: 20px;
+}
+
+.title {
+    color: red;
+
+}
+
+.number {
+    color: red;
+}
+
+.btn {
+    background-color: lightgray;
+    color: blueviolet;
+}
