@@ -1,20 +1,15 @@
-import React from 'react';
-
 import { useForm } from 'react-hook-form';
 import s from './FormInput.module.css';
-import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/contactsOps';
 
 const FormInput = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
-  const submit = ({ title, number }) => {
+  const submit = ({ name, number }) => {
     const newContact = {
-      id: nanoid(),
-      title,
+      name,
       number,
-      completed: false,
     };
     dispatch(addContact(newContact));
     reset();
@@ -27,8 +22,7 @@ const FormInput = () => {
         <input
           className={s.fild}
           type="text"
-          {...register('title', { required: true })}
-          name="title"
+          {...register('name', { required: true })}
         />
 
         <p className={s.name}>Number</p>
@@ -36,7 +30,6 @@ const FormInput = () => {
           className={s.fild}
           type="tel"
           {...register('number', { required: true })}
-          name="number"
         />
         <button className={s.btn} type="submit">
           Add contact

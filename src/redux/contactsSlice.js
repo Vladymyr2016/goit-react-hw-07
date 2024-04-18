@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteContactThunk, fetchData } from './contactsOps';
+import { addContact, deleteContact, fetchData } from './contactsOps';
 
 const initialState = {
   contacts: {
@@ -12,41 +12,37 @@ const initialState = {
 const slice = createSlice({
   name: 'phoneBook',
   initialState,
-  // reducers: {
-  //   removeContact: (state, { payload }) => {
-  //     state.contacts.items = state.contacts.items.filter(
-  //       (item) => item.id !== payload
-  //     );
-  //   },
-  //   addContact: (state, { payload }) => {
-  //     state.contacts.items.push(payload);
-  //   },
-  //   isLoading: (state, { payload }) => {
-  //     state.isLoading = payload;
-  //   },
-  //   isError: (state, { payload }) => {
-  //     state.isError = payload;
-  //   },
-  //   dataFetched: (state, { payload }) => {
-  //     state.contacts = payload;
-  //   },
-  // },
 
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.fulfilled, (state, { payload }) => {
-        state.items = payload;
+        state.contacts.items = payload;
         state.isLoading = false;
       })
-      .addCase(fetchData.pending, (state, { payload }) => {
+      .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(fetchData.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isError = payload;
       })
-      .addCase(deleteContactThunk.fulfilled, (state, { payload }) => {
+      .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.items = state.items.filter((item) => item.id !== payload);
+        state.isLoading = false;
+      })
+      .addCase(deleteContact.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+        state.contacts.items.push(payload);
+        state.isLoading = false;
+      })
+      .addCase(addContact.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addContact.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isError = payload;
       });
   },
   selectors: {
@@ -63,7 +59,6 @@ const slice = createSlice({
 });
 
 export const phoneBookReduser = slice.reducer;
-export const { addContact, removeContact, isLoading, isError, dataFetched } =
-  slice.actions;
+export const { removeContact, isLoading, isError, dataFetched } = slice.actions;
 export const { selectPhoneBook, selectIsError, selectIsLoading } =
   slice.selectors;

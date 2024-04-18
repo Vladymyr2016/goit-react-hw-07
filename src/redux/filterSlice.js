@@ -9,12 +9,12 @@ const slice = createSlice({
   },
   reducers: {
     filterContact: (state, action) => {
-      state.filters = action.payload;
+      state.filters.name = action.payload;
     },
   },
   selectors: {
     selectFilter: (state) => {
-      return state.filters;
+      return state.filters.name;
     },
   },
 });
