@@ -1,7 +1,7 @@
 import Contact from '../Contact/Contact';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { isLoading } from '../../redux/contactsSlice';
+import { selectIsLoading } from '../../redux/contactsSlice';
 
 import { useEffect } from 'react';
 import { fetchData } from '../../redux/contactsOps';
@@ -9,6 +9,7 @@ import { selectFilteredContacts } from '../../redux/selectors';
 
 const ContactList = () => {
   const contacts = useSelector(selectFilteredContacts);
+  const loading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchData());
@@ -16,7 +17,7 @@ const ContactList = () => {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
+      {loading && <p>Loading...</p>}
       <ul>
         {contacts?.map((contact) => {
           return <Contact key={contact.id} {...contact} />;
