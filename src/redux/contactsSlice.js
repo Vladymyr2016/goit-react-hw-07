@@ -45,6 +45,7 @@ const slice = createSlice({
         state.isError = payload;
       });
   },
+
   selectors: {
     selectPhoneBook: (state) => {
       return state.contacts.items;
